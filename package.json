@@ -1,0 +1,19 @@
+{
+  "name": "leaflet-kml",
+  "version": "1.0.0",
+  "description": "Leaflet KML layer plugin",
+  "main": "L.KML.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/windycom/leaflet-kml.git"
+  },
+  "author": "Pavel Shramov, Bruno Bergot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/windycom/leaflet-kml/issues"
+  },
+  "homepage": "https://github.com/windycom/leaflet-kml#readme"
+}
