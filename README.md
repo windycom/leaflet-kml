@@ -22,14 +22,28 @@ Probablly will work on Leaflet 1+, tested on Leaflet 1.4.
 <body>
 	<div style="width:100%; height:100%" id="map"></div>
 	<script type='text/javascript'>
-		var map = new L.Map('map', {center: new L.LatLng(58.4, 43.0), zoom: 11});
-		var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-		var track = new L.KML("assets/example1.kml", {async: true});
-		track.on("loaded", function(e) {
-			map.fitBounds(e.target.getBounds());
-		});
-		map.addLayer(track);
-		map.addLayer(osm);
+
+		// Make basemap
+		const map = new L.Map('map', {center: new L.LatLng(58.4, 43.0), zoom: 11})
+		, osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+
+		map.addLayer(osm)
+
+		// Load kml file
+		fetch('assets/example1.kml')
+			  .then( res => response.text() )
+			  .then( kml => {
+
+				  	// Create new kml overlay
+					const track = new L.KML(kml)
+					map.addLayer(track)
+
+					// Adjust map to show the kml
+					const bounds = track.getBounds()
+					map.fitBounds( bounds )
+
+			  })
+
 	</script>
 </body>
 </html>
@@ -37,6 +51,7 @@ Probablly will work on Leaflet 1+, tested on Leaflet 1.4.
 
 ## Changelog
 
+ * 1.0.1 - Updated README
  * 1.0.0 - Initial commit, original version with few fixes
 
 ## Licence
