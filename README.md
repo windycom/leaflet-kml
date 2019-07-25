@@ -24,25 +24,27 @@ Probablly will work on Leaflet 1+, tested on Leaflet 1.4.
 	<script type='text/javascript'>
 
 		// Make basemap
-		const map = new L.Map('map', {center: new L.LatLng(58.4, 43.0), zoom: 11})
-		, osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+   		const map = new L.Map('map', {center: new L.LatLng(58.4, 43.0), zoom: 11});
+   		const osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
-		map.addLayer(osm)
+		map.addLayer(osm);
 
 		// Load kml file
-		fetch('assets/example1.kml')
-			  .then( res => response.text() )
-			  .then( kml => {
+   		fetch('assets/example1.kml')
+   		  	.then(res => res.text())
+   		  	.then(kmltext => {
 
-				  	// Create new kml overlay
-					const track = new L.KML(kml)
-					map.addLayer(track)
+				// Create new kml overlay
+   			  	const parser = new DOMParser();
+   			  	const kml = parser.parseFromString(kmltext, "text/xml");
+   				const track = new L.KML(kml);
+   				map.addLayer(track);
 
-					// Adjust map to show the kml
-					const bounds = track.getBounds()
-					map.fitBounds( bounds )
+				// Adjust map to show the kml
+   				const bounds = track.getBounds();
+   				map.fitBounds(bounds);
 
-			  })
+			});
 
 	</script>
 </body>
