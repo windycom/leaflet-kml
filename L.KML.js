@@ -209,7 +209,9 @@ L.Util.extend(L.KML, {
 		for (h in multi) {
 			el = place.getElementsByTagName(multi[h]);
 			for (i = 0; i < el.length; i++) {
-				return this.parsePlacemark(el[i], xml, style, opts);
+				var layer = this.parsePlacemark(el[i], xml, style, opts);
+				this.addPlacePopup(place, layer);
+				return layer;
 			}
 		}
 
@@ -233,26 +235,29 @@ L.Util.extend(L.KML, {
 			layer = new L.FeatureGroup(layers);
 		}
 
-		var name, descr = '';
-		el = place.getElementsByTagName('name');
-		if (el.length && el[0].childNodes.length) {
-			name = el[0].childNodes[0].nodeValue;
-		}
-		el = place.getElementsByTagName('description');
-		for (i = 0; i < el.length; i++) {
-			for (j = 0; j < el[i].childNodes.length; j++) {
-				descr = descr + el[i].childNodes[j].nodeValue;
-			}
-		}
-
-		if (name) {
-			layer.on('add', function () {
-				layer.bindPopup('<h2>' + name + '</h2>' + descr, { className: 'kml-popup'});
-			});
-		}
-
+		this.addPlacePopup(place, layer);
 		return layer;
 	},
+
+  addPlacePopup(place, layer) {
+    var i, j, name, descr = '';
+    el = place.getElementsByTagName('name');
+    if (el.length && el[0].childNodes.length) {
+      name = el[0].childNodes[0].nodeValue;
+    }
+    el = place.getElementsByTagName('description');
+    for (i = 0; i < el.length; i++) {
+      for (j = 0; j < el[i].childNodes.length; j++) {
+        descr = descr + el[i].childNodes[j].nodeValue;
+      }
+    }
+
+    if (name) {
+      layer.on('add', function () {
+        layer.bindPopup('<h2>' + name + '</h2>' + descr, { className: 'kml-popup'});
+      });
+    }
+  },
 
 	parseCoords: function (xml) {
 		var el = xml.getElementsByTagName('coordinates');
