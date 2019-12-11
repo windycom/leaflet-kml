@@ -239,7 +239,7 @@ L.Util.extend(L.KML, {
 		return layer;
 	},
 
-  addPlacePopup(place, layer) {
+  addPlacePopup: function(place, layer) {
     var i, j, name, descr = '';
     el = place.getElementsByTagName('name');
     if (el.length && el[0].childNodes.length) {
