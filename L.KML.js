@@ -405,15 +405,18 @@ L.KMLIcon = L.Icon.extend({
 	},
 	applyCustomStyles: function(img) {
 		var options = this.options;
-		this.options.popupAnchor = [0,(-0.83*img.height)];
+		var width = options.iconSize[0];
+		var height = options.iconSize[1];
+
+		this.options.popupAnchor = [0,(-0.83*height)];
 		if (options.anchorType.x === 'fraction')
-			img.style.marginLeft = (-options.anchorRef.x * img.width) + 'px';
+			img.style.marginLeft = (-options.anchorRef.x * width) + 'px';
 		if (options.anchorType.y === 'fraction')
-			img.style.marginTop  = ((-(1 - options.anchorRef.y) * img.height) + 1) + 'px';
+			img.style.marginTop  = ((-(1 - options.anchorRef.y) * height) + 1) + 'px';
 		if (options.anchorType.x === 'pixels')
 			img.style.marginLeft = (-options.anchorRef.x) + 'px';
 		if (options.anchorType.y === 'pixels')
-			img.style.marginTop  = (options.anchorRef.y - img.height + 1) + 'px';
+			img.style.marginTop  = (options.anchorRef.y - height + 1) + 'px';
 	}
 });
 
