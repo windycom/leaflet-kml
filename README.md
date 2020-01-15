@@ -8,7 +8,7 @@ This plugin was extracted from Pavel Shramov's Leaflet Plugins [repository](http
 
 So far we have fixed few issues.
 
-Probablly will work on Leaflet 1+, tested on Leaflet 1.4.
+Probably will work on Leaflet 1+, tested on Leaflet 1.4.
 
 ## How to use
 
