@@ -160,7 +160,7 @@ L.Util.extend(L.KML, {
 	},
 
 	parseFolder: function (xml, style) {
-		var el, layers = [], l, layer;
+		var el, layers = [], l;
 		el = xml.getElementsByTagName('Folder');
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i], xml)) { continue; }
@@ -181,15 +181,15 @@ L.Util.extend(L.KML, {
 		}
 		if (!layers.length) { return; }
 		if (layers.length === 1) {
-			layer = layers[0];
+			l = layers[0];
 		} else {
-			layer = new L.FeatureGroup(layers);
+			l = new L.FeatureGroup(layers);
 		}
 		el = xml.getElementsByTagName('name');
 		if (el.length && el[0].childNodes.length) {
-			layer.options.name = el[0].childNodes[0].nodeValue;
+			l.options.name = el[0].childNodes[0].nodeValue;
 		}
-		return layer;
+		return l;
 	},
 
 	parsePlacemark: function (place, xml, style, options) {
