@@ -160,7 +160,7 @@ L.Util.extend(L.KML, {
 	},
 
 	parseFolder: function (xml, style) {
-		var el, layers = [], l;
+		var el, layers = [], l, layer;
 		el = xml.getElementsByTagName('Folder');
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i], xml)) { continue; }
