@@ -180,8 +180,16 @@ L.Util.extend(L.KML, {
 			if (l) { layers.push(l); }
 		}
 		if (!layers.length) { return; }
-		if (layers.length === 1) { return layers[0]; }
-		return new L.FeatureGroup(layers);
+		if (layers.length === 1) {
+			l = layers[0];
+		} else {
+			l = new L.FeatureGroup(layers);
+		}
+		el = xml.getElementsByTagName('name');
+		if (el.length && el[0].childNodes.length) {
+			l.options.name = el[0].childNodes[0].nodeValue;
+		}
+		return l;
 	},
 
 	parsePlacemark: function (place, xml, style, options) {
