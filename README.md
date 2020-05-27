@@ -48,11 +48,6 @@ Probably will work on Leaflet 1+, tested on Leaflet 1.4.
 
 ```
 
-## Changelog
-
--   1.0.1 - Updated README
--   1.0.0 - Initial commit, original version with few fixes
-
 ## Licence
 
 MIT
