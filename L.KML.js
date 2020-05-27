@@ -407,12 +407,12 @@ L.KMLIcon = L.Icon.extend({
 	},
 	_setIconStyles: function (img, name) {
 		L.Icon.prototype._setIconStyles.apply(this, [img, name]);
-		if( img.complete ) {
-			this.applyCustomStyles( img )
-		} else {
-			img.onload = this.applyCustomStyles.bind(this,img)
-		}
-
+	},
+	_createImg: function (src, el) {
+		el = el || document.createElement('img');
+		el.onload = this.applyCustomStyles.bind(this,el)
+		el.src = src;
+		return el;
 	},
 	applyCustomStyles: function(img) {
 		var options = this.options;
