@@ -248,7 +248,7 @@ L.Util.extend(L.KML, {
 	},
 
   addPlacePopup: function(place, layer) {
-    var i, j, name, descr = '';
+    var el, i, j, name, descr = '';
     el = place.getElementsByTagName('name');
     if (el.length && el[0].childNodes.length) {
       name = el[0].childNodes[0].nodeValue;
