@@ -4,17 +4,18 @@
 
 L.KML = L.FeatureGroup.extend({
 
-	initialize: function (kml) {
+	initialize: function (kml, kmlOptions) {
 		this._kml = kml;
 		this._layers = {};
+		this._kmlOptions = kmlOptions;
 
 		if (kml) {
-			this.addKML(kml);
+			this.addKML(kml, kmlOptions);
 		}
 	},
 
-	addKML: function (xml) {
-		var layers = L.KML.parseKML(xml);
+	addKML: function (xml, kmlOptions) {
+		var layers = L.KML.parseKML(xml, kmlOptions);
 		if (!layers || !layers.length) return;
 		for (var i = 0; i < layers.length; i++) {
 			this.fire('addlayer', {
@@ -31,8 +32,8 @@ L.KML = L.FeatureGroup.extend({
 
 L.Util.extend(L.KML, {
 
-	parseKML: function (xml) {
-		var style = this.parseStyles(xml);
+	parseKML: function (xml, kmlOptions) {
+		var style = this.parseStyles(xml, kmlOptions);
 		this.parseStyleMap(xml, style);
 		var el = xml.getElementsByTagName('Folder');
 		var layers = [], l;
@@ -66,11 +67,11 @@ L.Util.extend(L.KML, {
 		return !e || e === folder;
 	},
 
-	parseStyles: function (xml) {
+	parseStyles: function (xml, kmlOptions) {
 		var styles = {};
 		var sl = xml.getElementsByTagName('Style');
 		for (var i=0, len=sl.length; i<len; i++) {
-			var style = this.parseStyle(sl[i]);
+			var style = this.parseStyle(sl[i], kmlOptions);
 			if (style) {
 				var styleName = '#' + style.id;
 				styles[styleName] = style;
@@ -79,7 +80,7 @@ L.Util.extend(L.KML, {
 		return styles;
 	},
 
-	parseStyle: function (xml) {
+	parseStyle: function (xml, kmlOptions) {
 		var style = {}, poptions = {}, ioptions = {}, el, id;
 
 		var attributes = {color: true, width: true, Icon: true, href: true, hotSpot: true};
@@ -122,12 +123,18 @@ L.Util.extend(L.KML, {
 		el = xml.getElementsByTagName('IconStyle');
 		if (el && el[0]) { ioptions = _parse(el[0]); }
 		if (ioptions.href) {
-			style.icon = new L.KMLIcon({
+			var iconOptions = {
 				iconUrl: ioptions.href,
 				shadowUrl: null,
 				anchorRef: {x: ioptions.x, y: ioptions.y},
 				anchorType:	{x: ioptions.xunits, y: ioptions.yunits}
-			});
+			};
+
+			if (typeof kmlOptions === "object" && typeof kmlOptions.iconOptions === "object") {
+				L.Util.extend(iconOptions, kmlOptions.iconOptions);
+			}
+
+			style.icon = new L.KMLIcon(iconOptions);
 		}
 
 		id = xml.getAttribute('id');
