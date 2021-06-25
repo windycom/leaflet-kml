@@ -225,6 +225,8 @@ L.Util.extend(L.KML, {
 			el = place.getElementsByTagName(multi[h]);
 			for (i = 0; i < el.length; i++) {
 				var layer = this.parsePlacemark(el[i], xml, style, opts);
+				if (layer === undefined)
+					continue;
 				this.addPlacePopup(place, layer);
 				return layer;
 			}
