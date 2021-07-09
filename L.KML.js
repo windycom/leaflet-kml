@@ -217,6 +217,10 @@ L.Util.extend(L.KML, {
 				for (k in inlineStyle) {
 					opts[k] = inlineStyle[k];
 				}
+
+				el = place.getElementsByTagName('name');
+				if (el.length)
+					opts['name'] = el[0].textContent;
 			}
 		}
 
