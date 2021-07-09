@@ -39,13 +39,13 @@ L.Util.extend(L.KML, {
 		var layers = [], l;
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i])) { continue; }
-			l = this.parseFolder(el[i], style);
+			l = this.parseFolder(el[i], style, kmlOptions);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('Placemark');
 		for (var j = 0; j < el.length; j++) {
 			if (!this._check_folder(el[j])) { continue; }
-			l = this.parsePlacemark(el[j], xml, style);
+			l = this.parsePlacemark(el[j], xml, style, undefined, kmlOptions);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('GroundOverlay');
@@ -166,18 +166,18 @@ L.Util.extend(L.KML, {
 		return;
 	},
 
-	parseFolder: function (xml, style) {
+	parseFolder: function (xml, style, kmlOptions) {
 		var el, layers = [], l;
 		el = xml.getElementsByTagName('Folder');
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i], xml)) { continue; }
-			l = this.parseFolder(el[i], style);
+			l = this.parseFolder(el[i], style, kmlOptions);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('Placemark');
 		for (var j = 0; j < el.length; j++) {
 			if (!this._check_folder(el[j], xml)) { continue; }
-			l = this.parsePlacemark(el[j], xml, style);
+			l = this.parsePlacemark(el[j], xml, style, undefined, kmlOptions);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('GroundOverlay');
@@ -199,7 +199,7 @@ L.Util.extend(L.KML, {
 		return l;
 	},
 
-	parsePlacemark: function (place, xml, style, options) {
+	parsePlacemark: function (place, xml, style, options, kmlOptions) {
 		var h, i, j, k, el, il, opts = options || {};
 
 		el = place.getElementsByTagName('styleUrl');
@@ -224,10 +224,11 @@ L.Util.extend(L.KML, {
 		for (h in multi) {
 			el = place.getElementsByTagName(multi[h]);
 			for (i = 0; i < el.length; i++) {
-				var layer = this.parsePlacemark(el[i], xml, style, opts);
+				var layer = this.parsePlacemark(el[i], xml, style, opts, kmlOptions);
 				if (layer === undefined)
 					continue;
-				this.addPlacePopup(place, layer);
+				if (!kmlOptions || (typeof kmlOptions === "object" && !kmlOptions.disablePlacePopup)) 
+					this.addPlacePopup(place, layer);
 				return layer;
 			}
 		}
@@ -252,7 +253,8 @@ L.Util.extend(L.KML, {
 			layer = new L.FeatureGroup(layers);
 		}
 
-		this.addPlacePopup(place, layer);
+		if (!kmlOptions || (typeof kmlOptions === "object" && !kmlOptions.disablePlacePopup))
+			this.addPlacePopup(place, layer);
 		return layer;
 	},
 
