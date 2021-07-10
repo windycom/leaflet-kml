@@ -220,7 +220,7 @@ L.Util.extend(L.KML, {
 
 				el = place.getElementsByTagName('name');
 				if (el.length)
-					opts['name'] = el[0].textContent;
+					opts['zoneName'] = el[0].textContent;
 			}
 		}
 
