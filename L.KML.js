@@ -97,7 +97,7 @@ L.Util.extend(L.KML, {
 						options[e.attributes[j].name] = e.attributes[j].nodeValue;
 					}
 				} else {
-					var value = e.childNodes[0]?.nodeValue;
+					var value = (e.childNodes && e.childNodes.length) ? e.childNodes[0].nodeValue : null;
 					if(!value) {
 						continue;
 					}
