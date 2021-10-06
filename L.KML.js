@@ -97,7 +97,10 @@ L.Util.extend(L.KML, {
 						options[e.attributes[j].name] = e.attributes[j].nodeValue;
 					}
 				} else {
-					var value = e.childNodes[0].nodeValue;
+					var value = (e.childNodes && e.childNodes.length) ? e.childNodes[0].nodeValue : null;
+					if(!value) {
+						continue;
+					}
 					if (key === 'color') {
 						options.opacity = parseInt(value.substring(0, 2), 16) / 255.0;
 						options.color = '#' + value.substring(6, 8) + value.substring(4, 6) + value.substring(2, 4);
