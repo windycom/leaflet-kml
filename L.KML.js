@@ -97,17 +97,19 @@ L.Util.extend(L.KML, {
 						options[e.attributes[j].name] = e.attributes[j].nodeValue;
 					}
 				} else {
-					var value = e.childNodes[0].nodeValue;
-					if (key === 'color') {
-						options.opacity = parseInt(value.substring(0, 2), 16) / 255.0;
-						options.color = '#' + value.substring(6, 8) + value.substring(4, 6) + value.substring(2, 4);
-					} else if (key === 'width') {
-						options.weight = parseInt(value);
-					} else if (key === 'Icon') {
-						ioptions = _parse(e);
-						if (ioptions.href) { options.href = ioptions.href; }
-					} else if (key === 'href') {
-						options.href = value;
+					var value = e.childNodes[0]?.nodeValue;
+					if(value) {
+						if (key === 'color') {
+							options.opacity = parseInt(value.substring(0, 2), 16) / 255.0;
+							options.color = '#' + value.substring(6, 8) + value.substring(4, 6) + value.substring(2, 4);
+						} else if (key === 'width') {
+							options.weight = parseInt(value);
+						} else if (key === 'Icon') {
+							ioptions = _parse(e);
+							if (ioptions.href) { options.href = ioptions.href; }
+						} else if (key === 'href') {
+							options.href = value;
+						}
 					}
 				}
 			}
