@@ -40,18 +40,18 @@ L.Util.extend(L.KML, {
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i])) { continue; }
 			l = this.parseFolder(el[i], style);
-			if (l) { layers.push(l); }
+            if (l) { layers.push(l); l.remove(); }
 		}
 		el = xml.getElementsByTagName('Placemark');
 		for (var j = 0; j < el.length; j++) {
 			if (!this._check_folder(el[j])) { continue; }
 			l = this.parsePlacemark(el[j], xml, style);
-			if (l) { layers.push(l); }
+			if (l) { layers.push(l); l.remove();}
 		}
 		el = xml.getElementsByTagName('GroundOverlay');
 		for (var k = 0; k < el.length; k++) {
 			l = this.parseGroundOverlay(el[k]);
-			if (l) { layers.push(l); }
+			if (l) { layers.push(l); l.remove();}
 		}
 		return layers;
 	},
