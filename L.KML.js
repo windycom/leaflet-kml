@@ -433,11 +433,11 @@ L.KMLIcon = L.Icon.extend({
 
 		this.options.popupAnchor = [0,(-0.83*height)];
 		if (options.anchorType.x === 'fraction')
-			img.style.marginLeft = (-options.anchorRef.x * width) + 'px';
+			img.style.marginLeft = (-options.anchorRef.x * width / 2) + 'px';
 		if (options.anchorType.y === 'fraction')
 			img.style.marginTop  = ((-(1 - options.anchorRef.y) * height) + 1) + 'px';
 		if (options.anchorType.x === 'pixels')
-			img.style.marginLeft = (-options.anchorRef.x) + 'px';
+			img.style.marginLeft = (-options.anchorRef.x / 2) + 'px';
 		if (options.anchorType.y === 'pixels')
 			img.style.marginTop  = (options.anchorRef.y - height + 1) + 'px';
 	}
