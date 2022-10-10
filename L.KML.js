@@ -112,7 +112,7 @@ L.Util.extend(L.KML, {
 					} else if (key === 'href') {
 						options.href = value;
 					} else if (key === 'fill') {
-						options.fill = !!parseInt(value);
+						options.fill = (value === '1');
                                         }
 				}
 			}
@@ -123,8 +123,9 @@ L.Util.extend(L.KML, {
 		if (el && el[0]) { style = _parse(el[0]); }
 		el = xml.getElementsByTagName('PolyStyle');
 		if (el && el[0]) { poptions = _parse(el[0]); }
-		style.fill = poptions.fill || false;
-		if (poptions.color) { style.fillColor = poptions.color; style.fill = true; }
+		// the KML schema defines the default for <fill> to be 1
+		style.fill = (poptions.fill === undefined) || poptions.fill;
+		if (poptions.color) { style.fillColor = poptions.color; }
 		if (poptions.opacity) { style.fillOpacity = poptions.opacity; }
 		el = xml.getElementsByTagName('IconStyle');
 		if (el && el[0]) { ioptions = _parse(el[0]); }
