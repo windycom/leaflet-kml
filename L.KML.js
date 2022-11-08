@@ -4,18 +4,18 @@
 
 L.KML = L.FeatureGroup.extend({
 
-	initialize: function (kml, kmlOptions) {
+	initialize: function (kml, kmlOptions, layerOptions) {
 		this._kml = kml;
 		this._layers = {};
 		this._kmlOptions = kmlOptions;
 
 		if (kml) {
-			this.addKML(kml, kmlOptions);
+			this.addKML(kml, kmlOptions, layerOptions);
 		}
 	},
 
-	addKML: function (xml, kmlOptions) {
-		var layers = L.KML.parseKML(xml, kmlOptions);
+	addKML: function (xml, kmlOptions, layerOptions) {
+		var layers = L.KML.parseKML(xml, kmlOptions, layerOptions);
 		if (!layers || !layers.length) return;
 		for (var i = 0; i < layers.length; i++) {
 			this.fire('addlayer', {
@@ -32,25 +32,25 @@ L.KML = L.FeatureGroup.extend({
 
 L.Util.extend(L.KML, {
 
-	parseKML: function (xml, kmlOptions) {
+	parseKML: function (xml, kmlOptions, layerOptions) {
 		var style = this.parseStyles(xml, kmlOptions);
 		this.parseStyleMap(xml, style);
 		var el = xml.getElementsByTagName('Folder');
 		var layers = [], l;
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i])) { continue; }
-			l = this.parseFolder(el[i], style);
+			l = this.parseFolder(el[i], style, layerOptions);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('Placemark');
 		for (var j = 0; j < el.length; j++) {
 			if (!this._check_folder(el[j])) { continue; }
-			l = this.parsePlacemark(el[j], xml, style);
+			l = this.parsePlacemark(el[j], xml, style, layerOptions);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('GroundOverlay');
 		for (var k = 0; k < el.length; k++) {
-			l = this.parseGroundOverlay(el[k]);
+			l = this.parseGroundOverlay(el[k], layerOptions);
 			if (l) { layers.push(l); }
 		}
 		return layers;
@@ -169,24 +169,24 @@ L.Util.extend(L.KML, {
 		return;
 	},
 
-	parseFolder: function (xml, style) {
+	parseFolder: function (xml, style, options) {
 		var el, layers = [], l;
 		el = xml.getElementsByTagName('Folder');
 		for (var i = 0; i < el.length; i++) {
 			if (!this._check_folder(el[i], xml)) { continue; }
-			l = this.parseFolder(el[i], style);
+			l = this.parseFolder(el[i], style, options);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('Placemark');
 		for (var j = 0; j < el.length; j++) {
 			if (!this._check_folder(el[j], xml)) { continue; }
-			l = this.parsePlacemark(el[j], xml, style);
+			l = this.parsePlacemark(el[j], xml, style, options);
 			if (l) { layers.push(l); }
 		}
 		el = xml.getElementsByTagName('GroundOverlay');
 		for (var k = 0; k < el.length; k++) {
 			if (!this._check_folder(el[k], xml)) { continue; }
-			l = this.parseGroundOverlay(el[k]);
+			l = this.parseGroundOverlay(el[k], options);
 			if (l) { layers.push(l); }
 		}
 		if (!layers.length) { return; }
@@ -369,7 +369,7 @@ L.Util.extend(L.KML, {
 		return coords;
 	},
 
-	parseGroundOverlay: function (xml) {
+	parseGroundOverlay: function (xml, options) {
 		var latlonbox = xml.getElementsByTagName('LatLonBox')[0];
 		var bounds = new L.LatLngBounds(
 			[
@@ -407,7 +407,7 @@ L.Util.extend(L.KML, {
 			var rotation = latlonbox.getElementsByTagName('rotation')[0].childNodes[0].nodeValue;
 			options.rotation = parseFloat(rotation);
 		}
-		return new L.RotatedImageOverlay(options.href, bounds, {opacity: options.opacity, angle: options.rotation});
+		return new L.RotatedImageOverlay(options.href, bounds, {opacity: options.opacity, angle: options.rotation, ...options});
 	}
 
 });
